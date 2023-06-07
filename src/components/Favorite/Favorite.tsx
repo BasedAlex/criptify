@@ -1,9 +1,20 @@
 'use client'
+import { removeFromFav } from '@/components/store/slices/initialSlice'
+import { removeItemFromPortfolio } from '@/components/store/slices/portfolioSlice'
 import React from 'react'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 
 const Favorite = () => {
 	const data = useSelector((state: any) => state.favorite)
+
+	const dispatch = useDispatch()
+
+	const handleRemove = (data: any) => {
+		dispatch(removeFromFav(data))
+	}
+	const handleRemoveOne = (data: any) => {
+		dispatch(removeItemFromPortfolio(data))
+	}
 
 	console.log(data)
 
@@ -20,8 +31,21 @@ const Favorite = () => {
 				<button className='border rounded-2xl	 border-sky-400 w-full'>
 					Add More
 				</button>
-				<button className='border rounded-2xl border-sky-400 w-full'>
-					Remove
+				<button
+					className='border rounded-2xl border-sky-400 w-full'
+					onClick={() => {
+						handleRemoveOne(item)
+					}}
+				>
+					Sell One
+				</button>
+				<button
+					className='border rounded-2xl border-sky-400 w-full'
+					onClick={() => {
+						handleRemove(item)
+					}}
+				>
+					Sell All
 				</button>
 			</div>
 		</div>

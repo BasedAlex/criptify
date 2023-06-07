@@ -1,32 +1,37 @@
+'use client'
 import useDebounce from '@/components/hooks/useDebounce'
 import { useGetAssetQuery } from '@/components/store/fetchAPI/apiSlice'
+import { RootState } from '@/components/store'
 import Link from 'next/link'
-import React, { useEffect, useState } from 'react'
+import React, { FC, useEffect, useState } from 'react'
+import Pointer from '../../../public/svg/Pointer'
+import { useDispatch, useSelector } from 'react-redux'
+import Modal from '../UI/Modal/Modal'
+import Donation from '../Donation/Donation'
+import { increaseActualBalance } from '@/components/store/slices/balanceSlice'
 
-type SearchType = {
-	data: dataType
-	singleAssetData: dataType
-}
-
-type dataType = {
-	id: string
-	rank: string
-	symbol: string
-	name: string
-}
-
-const Header = () => {
+const Header: FC = ({}) => {
 	const [search, setSearch] = useState('')
+	const [openModal, setOpenModal] = useState(false)
 	const [skip, setSkip] = React.useState(true)
-	const debouncedValue = useDebounce<string>(search, 1500)
+	const debouncedValue = useDebounce(search, 1500)
 	const { data: singleAssetData } = useGetAssetQuery(debouncedValue, {
 		skip,
 	})
+	const dispatch = useDispatch()
+
+	const balance = useSelector((state: RootState) => state.balance.balance)
 
 	const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
 		setSearch(e.target.value)
-		debouncedValue !== '' ? setSkip(false) : setSkip(true)
+		setSkip(false)
 	}
+
+	useEffect(() => {
+		dispatch(increaseActualBalance())
+	})
+
+	console.log(singleAssetData)
 
 	return (
 		<header className='border-b-2'>
@@ -35,10 +40,17 @@ const Header = () => {
 					Cripto Hub
 				</Link>
 				<div className='flex gap-4 '>
-					<Link href='/Watchlist' className='leading-8'>
-						Watchlist
+					<Link
+						href='/watchlist'
+						className='flex leading-8 hover:text-cyan-400'
+					>
+						<div className='pt-2'>
+							<Pointer />
+						</div>
+
+						<div className=''>Watchlist</div>
 					</Link>
-					<Link href='/Portfolio' className='leading-8'>
+					<Link href='/portfolio' className='leading-8 hover:text-cyan-400'>
 						Portfolio
 					</Link>
 					<input
@@ -48,11 +60,21 @@ const Header = () => {
 							handleChange(e)
 						}}
 					/>
-					<button>Toggle Skip ({String(skip)})</button>
+
+					<div>Current Balance: {balance}</div>
+					<button
+						className='border border-cyan-400 rounded-lg p-2'
+						onClick={() => setOpenModal(!openModal)}
+					>
+						Increase balance
+					</button>
 				</div>
 			</div>
-			{search && (
-				<div className='container mx-auto'>{singleAssetData?.data.id}</div>
+			<div>{singleAssetData?.data.id}</div>
+			{openModal && (
+				<Modal active={openModal} setActive={setOpenModal}>
+					<Donation />
+				</Modal>
 			)}
 		</header>
 	)
