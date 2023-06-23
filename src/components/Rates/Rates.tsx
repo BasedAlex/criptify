@@ -5,13 +5,16 @@ import { useGetAllAssetsQuery } from '../../store/fetchAPI/apiSlice'
 import Rate from './Rate/Rate'
 import { useDispatch, useSelector } from 'react-redux'
 import Modal from '../UI/Modal/Modal'
-import { RootState } from '@/components/store'
-import { addToPortfolio } from '@/components/store/slices/portfolioSlice'
-import { decreaseBalance } from '@/components/store/slices/balanceSlice'
+import Toaster from '../UI/Toaster/Toaster'
+import { addToPortfolio } from '@/store/slices/portfolioSlice'
+import { RootState } from '@/store/index'
+import { decreaseBalance } from '@/store/slices/balanceSlice'
 
 const Rates = () => {
 	console.log(useSelector(state => state))
 	const [openPort, setOpenPort] = useState(false)
+	const [toast, setToast] = useState(false)
+	const [message, setMessage] = useState<string>('')
 	const [portItem, setPortItem] = useState<any>({})
 	const [donate, setDonate] = useState(1)
 	const [offset, setOffset] = useState(0)
@@ -55,13 +58,18 @@ const Rates = () => {
 
 	const handleAddToPort = (item: any) => {
 		if (balance > item.priceUsd * donate) {
+			setToast(false)
+			setMessage('Not Enough Coins')
 			console.log('donate', donate, item.priceUsd * donate)
 			dispatch(addToPortfolio({ ...item, donate }))
 			dispatch(decreaseBalance(item.priceUsd * donate))
+			setOpenPort(!openPort)
 		} else {
-			console.log('Not enough coins!')
+			setToast(true)
+			setTimeout(() => {
+				setToast(false)
+			}, 5000)
 		}
-		setOpenPort(!openPort)
 	}
 
 	const handlePaginate = (e: React.MouseEvent<HTMLDivElement>) => {
@@ -105,11 +113,13 @@ const Rates = () => {
 				</Modal>
 			)}
 
+			{toast && <Toaster toast={toast} setToast={setToast} message={message} />}
 			<div className=''>
 				{data?.data?.map((item: any) => (
 					<Rate key={item.id} data={item} handleOpenModal={handleOpenModal} />
 				))}
 			</div>
+
 			<div className='flex gap-4'>
 				<div onClick={handleLeft}>Left</div>
 				<div className='flex gap-5'>

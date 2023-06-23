@@ -4,22 +4,20 @@ import { createPortal } from 'react-dom'
 
 type PropsType = {
 	active: boolean
-	setActive: any
+	setActive: (arg: boolean) => void
 	children: ReactElement
 }
 
 function Modal({ active, setActive, children }: PropsType) {
 	const [domReady, setDomReady] = useState(false)
-	const ref = useRef<Element | null>(null)
+	// const ref = useRef<Element | null>(null)
 
 	useEffect(() => {
 		// ref.current = document.querySelector<HTMLElement>('portal')
-		// console.log('rendered!')
 		setDomReady(true)
-		return () => setDomReady(false)
 	}, [])
 
-	return domReady
+	return domReady && typeof window === 'object'
 		? createPortal(
 				<div
 					className={active ? 'modal active' : 'modal'}

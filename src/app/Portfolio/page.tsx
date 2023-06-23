@@ -1,13 +1,13 @@
-'use client'
-import Header from '@/components/components/Header/Header'
-import { useSelector } from 'react-redux'
-import PortfolioComponent from '../../components/Portfolio/PortfolioComponent'
+"use client";
+
+import Header from "@/components/Header/Header";
+import PortfolioComponent from "@/components/Portfolio/PortfolioComponent";
 
 export default function Portfolio() {
-	return (
-		<>
-			<Header />
-			<PortfolioComponent />
-		</>
-	)
+  return (
+    <>
+      <Header />
+      <PortfolioComponent />
+    </>
+  );
 }
