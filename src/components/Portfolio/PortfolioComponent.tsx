@@ -1,33 +1,32 @@
-"use client";
+'use client'
 
-import { RootState } from "@/store/index";
+import { RootState } from '@/store/index'
 import {
   removeFromPortfolio,
   removeItemFromPortfolio,
-} from "@/store/slices/portfolioSlice";
-import React from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { cn } from "../../lib/utils";
+} from '@/store/slices/portfolioSlice'
+import React from 'react'
+import { useDispatch, useSelector } from 'react-redux'
 
 const PortfolioComponent = () => {
-  const data = useSelector((state: RootState) => state.portfolio);
-  const dispatch = useDispatch();
+  const data = useSelector((state: RootState) => state.portfolio)
+  const dispatch = useDispatch()
 
   const handleRemove = (data: any) => {
-    dispatch(removeFromPortfolio(data));
-  };
+    dispatch(removeFromPortfolio(data))
+  }
   const handleRemoveOne = (data: any) => {
-    dispatch(removeItemFromPortfolio(data));
-  };
+    dispatch(removeItemFromPortfolio(data))
+  }
 
-  console.log(data);
+  console.log(data)
 
   return (
-    <div className={cn("container mx-auto")}>
-      <div className={cn("grid grid-cols-6")}>
-        {" "}
-        <p>Quantity</p>
+    <div className="container mx-auto">
+      <div className="grid grid-cols-1n6">
+        {' '}
         <p>Name</p>
+        <p>Quantity</p>
         <p>Bought for Price (Total) </p>
         <p>24h%</p>
         <p>Market Cap</p>
@@ -36,7 +35,7 @@ const PortfolioComponent = () => {
       </div>
 
       {data.portfolio.map((item: any) => (
-        <div key={item.id} className="grid grid-cols-7fill ">
+        <div key={item.id} className="grid-cols-7fill grid ">
           <p className="">{item.donate}</p>
           <p>{item.name}</p>
           <p>
@@ -60,17 +59,18 @@ const PortfolioComponent = () => {
 							Remove One
 						</button> */}
             <button
-              className="border rounded-2xl border-sky-400 w-full"
+              className="w-full rounded-2xl border border-sky-400"
               onClick={() => {
-                handleRemove(item);
-              }}>
+                handleRemove(item)
+              }}
+            >
               Remove All
             </button>
           </div>
         </div>
       ))}
     </div>
-  );
-};
+  )
+}
 
-export default PortfolioComponent;
+export default PortfolioComponent
