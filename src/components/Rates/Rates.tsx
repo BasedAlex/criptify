@@ -10,12 +10,8 @@ import { addToPortfolio } from '@/store/slices/portfolioSlice'
 import { RootState } from '@/store/index'
 import { decreaseBalance } from '@/store/slices/balanceSlice'
 import Subheader from './Subheader/Subheader'
-import { DM_Mono, Montserrat } from 'next/font/google'
-
-const montserrat = Montserrat({
-  weight: ['400', '500', '600', '700', '800'],
-  subsets: ['latin'],
-})
+import { DM_Mono } from 'next/font/google'
+import { Pagination } from '../UI/Pagination/Pagination'
 
 const dmmono = DM_Mono({
   weight: ['400', '500'],
@@ -32,35 +28,13 @@ const Rates = () => {
   const [donate, setDonate] = useState(1)
   const [offset, setOffset] = useState(0)
   const [limit, setLimit] = useState(100)
-  const maxOffset = 2000
+
   const { data } = useGetAllAssetsQuery(
     { offset, limit },
     {
       pollingInterval: 30000,
     }
   )
-  let pages: number[] = []
-
-  const paginate = (num = maxOffset / limit) => {
-    let i = 0
-    while (i < num) {
-      pages.push(i)
-      i++
-    }
-    return pages
-  }
-
-  const handleLeft = () => {
-    if (offset > 0) {
-      setOffset(offset - limit)
-    }
-  }
-
-  const handleRight = () => {
-    if (offset <= maxOffset) {
-      setOffset(offset + limit)
-    }
-  }
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (Number(e.target.value) || Number(e.target.value) === 0) {
@@ -90,10 +64,6 @@ const Rates = () => {
     } else {
       setToast(false)
     }
-  }
-
-  const handlePaginate = (e: React.MouseEvent<HTMLDivElement>) => {
-    setOffset(Number(e.currentTarget.innerText) * limit)
   }
 
   return (
@@ -138,59 +108,8 @@ const Rates = () => {
           <Rate key={item.id} data={item} handleOpenModal={handleOpenModal} />
         ))}
       </div>
-      <div className="container mx-auto">
-        <div className="my-6 flex cursor-pointer items-center justify-center pt-5 text-gray-600 lg:mt-0">
-          <div
-            className="rounded px-4 py-2 hover:bg-gray-100"
-            onClick={handleLeft}
-          >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              className="h-6 w-6"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth="2"
-                d="M15 19l-7-7 7-7"
-              />
-            </svg>
-          </div>
-          <div className="flex gap-5 ">
-            {paginate().map((page: number) => (
-              <div
-                className="rounded px-4 py-2 hover:bg-gray-100"
-                key={page}
-                onClick={(e) => handlePaginate(e)}
-              >
-                {page + 1}
-              </div>
-            ))}
-          </div>
-          <div
-            className="rounded px-4 py-2 hover:bg-gray-100"
-            onClick={handleRight}
-          >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              className="h-6 w-6"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth="2"
-                d="M9 5l7 7-7 7"
-              />
-            </svg>
-          </div>
-        </div>
-      </div>
+
+      <Pagination limit={limit} offset={offset} setOffset={setOffset} />
     </div>
   )
 }
