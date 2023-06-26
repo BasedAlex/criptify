@@ -10,9 +10,15 @@ import type { FC } from 'react'
 
 interface SubheaderProps {
   setLimit: (limit: number) => void
+  setOffset: (offset: number) => void
 }
 
-const Subheader: FC<SubheaderProps> = ({ setLimit }) => {
+const Subheader: FC<SubheaderProps> = ({ setLimit, setOffset }) => {
+  const changeLimit = (value: string) => {
+    setLimit(Number(value))
+    setOffset(0)
+  }
+
   return (
     <div className="flex justify-between  gap-4 pt-4 text-white">
       <div>
@@ -29,7 +35,7 @@ const Subheader: FC<SubheaderProps> = ({ setLimit }) => {
           Portfolio
         </Link>
       </div>
-      <Select onValueChange={(value) => setLimit(Number(value))}>
+      <Select onValueChange={(value) => changeLimit(value)}>
         <SelectTrigger className="w-[180px]">
           <SelectValue placeholder="Items on page" />
         </SelectTrigger>

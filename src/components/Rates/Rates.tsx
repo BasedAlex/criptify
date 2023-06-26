@@ -31,18 +31,19 @@ const Rates = () => {
   const [portItem, setPortItem] = useState<any>({})
   const [donate, setDonate] = useState(1)
   const [offset, setOffset] = useState(0)
-  const [limit, setLimit] = useState(20)
+  const [limit, setLimit] = useState(100)
+  const maxOffset = 2000
   const { data } = useGetAllAssetsQuery(
     { offset, limit },
     {
       pollingInterval: 30000,
     }
   )
+  let pages: number[] = []
 
-  const paginate = (num = 20) => {
-    let pages: any = []
-    let i = 1
-    while (i <= num) {
+  const paginate = (num = maxOffset / limit) => {
+    let i = 0
+    while (i < num) {
       pages.push(i)
       i++
     }
@@ -56,7 +57,7 @@ const Rates = () => {
   }
 
   const handleRight = () => {
-    if (offset <= 2000) {
+    if (offset <= maxOffset) {
       setOffset(offset + limit)
     }
   }
@@ -97,7 +98,7 @@ const Rates = () => {
 
   return (
     <div className="container mx-auto mt-16 ">
-      <Subheader setLimit={setLimit} />
+      <Subheader setLimit={setLimit} setOffset={setOffset} />
       <div
         className={`${dmmono.variable} my-4 grid grid-cols-1n6 justify-items-center rounded-sm border border-cyan-400 bg-gray-50 py-3  text-xl font-bold leading-snug`}
       >
@@ -137,17 +138,58 @@ const Rates = () => {
           <Rate key={item.id} data={item} handleOpenModal={handleOpenModal} />
         ))}
       </div>
-
-      <div className="mt-5 flex gap-4 bg-white ">
-        <div onClick={handleLeft}>Left</div>
-        <div className="flex gap-5 ">
-          {paginate().map((page: any, idx: any) => (
-            <div key={idx} onClick={(e) => handlePaginate(e)}>
-              {page}
-            </div>
-          ))}
+      <div className="container mx-auto">
+        <div className="my-6 flex cursor-pointer items-center justify-center pt-5 text-gray-600 lg:mt-0">
+          <div
+            className="rounded px-4 py-2 hover:bg-gray-100"
+            onClick={handleLeft}
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              className="h-6 w-6"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth="2"
+                d="M15 19l-7-7 7-7"
+              />
+            </svg>
+          </div>
+          <div className="flex gap-5 ">
+            {paginate().map((page: number) => (
+              <div
+                className="rounded px-4 py-2 hover:bg-gray-100"
+                key={page}
+                onClick={(e) => handlePaginate(e)}
+              >
+                {page + 1}
+              </div>
+            ))}
+          </div>
+          <div
+            className="rounded px-4 py-2 hover:bg-gray-100"
+            onClick={handleRight}
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              className="h-6 w-6"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth="2"
+                d="M9 5l7 7-7 7"
+              />
+            </svg>
+          </div>
         </div>
-        <div onClick={handleRight}>Right</div>
       </div>
     </div>
   )
