@@ -33,15 +33,6 @@ export const favoriteSlice = createSlice({
       state.favorite = currentFav
       state.totalFavoriteItems--
     },
-    // removeItemFromFav: (state: any, action: any) => {
-    //   const favIndex = state.favorite.findIndex(
-    //     (item: any) => item.id === action.payload.id
-    //   )
-    //   if (favIndex >= 0 && state.favorite[favIndex].favoriteQuantity > 1) {
-    //     state.favorite[favIndex].favoriteQuantity -= 1
-    //     state.totalFavoriteItems--
-    //   }
-    // },
   },
 })
 

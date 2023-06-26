@@ -9,6 +9,19 @@ import Toaster from '../UI/Toaster/Toaster'
 import { addToPortfolio } from '@/store/slices/portfolioSlice'
 import { RootState } from '@/store/index'
 import { decreaseBalance } from '@/store/slices/balanceSlice'
+import Subheader from './Subheader/Subheader'
+import { DM_Mono, Montserrat } from 'next/font/google'
+
+const montserrat = Montserrat({
+  weight: ['400', '500', '600', '700', '800'],
+  subsets: ['latin'],
+})
+
+const dmmono = DM_Mono({
+  weight: ['400', '500'],
+  subsets: ['latin'],
+  variable: '--font-dm_mono',
+})
 
 const Rates = () => {
   console.log(useSelector((state) => state))
@@ -18,7 +31,13 @@ const Rates = () => {
   const [portItem, setPortItem] = useState<any>({})
   const [donate, setDonate] = useState(1)
   const [offset, setOffset] = useState(0)
-  const { data } = useGetAllAssetsQuery(offset, { pollingInterval: 30000 })
+  const [limit, setLimit] = useState(20)
+  const { data } = useGetAllAssetsQuery(
+    { offset, limit },
+    {
+      pollingInterval: 30000,
+    }
+  )
 
   const paginate = (num = 20) => {
     let pages: any = []
@@ -32,13 +51,13 @@ const Rates = () => {
 
   const handleLeft = () => {
     if (offset > 0) {
-      setOffset(offset - 100)
+      setOffset(offset - limit)
     }
   }
 
   const handleRight = () => {
     if (offset <= 2000) {
-      setOffset(offset + 100)
+      setOffset(offset + limit)
     }
   }
 
@@ -58,31 +77,30 @@ const Rates = () => {
 
   const handleAddToPort = (item: any) => {
     if (balance > item.priceUsd * donate) {
-      setToast(false)
-      setMessage('Not Enough Coins')
+      setToast(true)
+      setMessage('Thanks for purchaise!')
+      setTimeout(() => {
+        setToast(false)
+      }, 5000)
       console.log('donate', donate, item.priceUsd * donate)
       dispatch(addToPortfolio({ ...item, donate }))
       dispatch(decreaseBalance(item.priceUsd * donate))
       setOpenPort(!openPort)
     } else {
-      setToast(true)
-      setTimeout(() => {
-        setToast(false)
-      }, 5000)
+      setToast(false)
     }
   }
 
   const handlePaginate = (e: React.MouseEvent<HTMLDivElement>) => {
-    setOffset(Number(e.currentTarget.innerText) * 100)
+    setOffset(Number(e.currentTarget.innerText) * limit)
   }
 
   return (
-    <div className="container mx-auto">
-      <div className="bordler-r-2 mt-4 flex gap-4">
-        <Link href="watchlist">Watchlist</Link>
-        <Link href="portfolio">Portfolio</Link>
-      </div>
-      <div className="my-4 grid grid-cols-1n6 border-b border-t border-cyan-400 px-10 py-3 font-bold">
+    <div className="container mx-auto mt-16 ">
+      <Subheader setLimit={setLimit} />
+      <div
+        className={`${dmmono.variable} my-4 grid grid-cols-1n6 justify-items-center rounded-sm border border-cyan-400 bg-gray-50 py-3  text-xl font-bold leading-snug`}
+      >
         <p>#</p>
         <p>Name</p>
         <p>Price </p>
@@ -114,15 +132,15 @@ const Rates = () => {
       )}
 
       {toast && <Toaster toast={toast} setToast={setToast} message={message} />}
-      <div className="">
+      <div className={`${dmmono.variable} text-xl shadow-lg`}>
         {data?.data?.map((item: any) => (
           <Rate key={item.id} data={item} handleOpenModal={handleOpenModal} />
         ))}
       </div>
 
-      <div className="flex gap-4">
+      <div className="mt-5 flex gap-4 bg-white ">
         <div onClick={handleLeft}>Left</div>
-        <div className="flex gap-5">
+        <div className="flex gap-5 ">
           {paginate().map((page: any, idx: any) => (
             <div key={idx} onClick={(e) => handlePaginate(e)}>
               {page}

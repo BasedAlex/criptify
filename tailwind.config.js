@@ -12,12 +12,14 @@ module.exports = {
   theme: {
     container: {
       center: true,
-      padding: '2rem',
       screens: {
         '2xl': '1400px',
       },
     },
     extend: {
+      fontFamily:{
+        mono: ['var(--font-dm_mono)']
+      },
       gridTemplateColumns: {
         '1n6': '80px, repeat(7, minmax(0, 1fr))',
         '2n6': '40px, 80px, repeat(7, minmax(0, 1fr))',
