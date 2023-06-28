@@ -1,5 +1,4 @@
 'use client'
-import Link from 'next/link'
 import React, { useState } from 'react'
 import { useGetAllAssetsQuery } from '../../store/fetchAPI/apiSlice'
 import Rate from './Rate/Rate'
@@ -11,7 +10,7 @@ import { RootState } from '@/store/index'
 import { decreaseBalance } from '@/store/slices/balanceSlice'
 import Subheader from './Subheader/Subheader'
 import { DM_Mono } from 'next/font/google'
-import { Pagination } from '../UI/Pagination/Pagination'
+import { TestPagination } from '../UI/Pagination/TestPagination'
 
 const dmmono = DM_Mono({
   weight: ['400', '500'],
@@ -28,6 +27,7 @@ const Rates = () => {
   const [donate, setDonate] = useState(1)
   const [offset, setOffset] = useState(0)
   const [limit, setLimit] = useState(100)
+  const [currentPage, setCurrentPage] = useState('1')
 
   const { data } = useGetAllAssetsQuery(
     { offset, limit },
@@ -109,7 +109,21 @@ const Rates = () => {
         ))}
       </div>
 
-      <Pagination limit={limit} offset={offset} setOffset={setOffset} />
+      {/* <Pagination limit={limit} offset={offset} setOffset={setOffset} /> */}
+      <TestPagination
+        limit={limit}
+        offset={offset}
+        setOffset={setOffset}
+        currentPage={currentPage}
+        setCurrentPage={setCurrentPage}
+      />
+      {/* <PaginationList
+        limit={limit}
+        offset={offset}
+        setOffset={setOffset}
+        currentPage={currentPage}
+        setCurrentPage={setCurrentPage}
+      /> */}
     </div>
   )
 }

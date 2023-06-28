@@ -1,4 +1,10 @@
-export const Pagination = (props: any) => {
+interface IProps {
+  limit: number
+  offset: number
+  setOffset: (arg: number) => void
+}
+
+export const Pagination = (props: IProps) => {
   const { limit, offset, setOffset } = props
   const maxOffset = 2000
   let pages: number[] = []
