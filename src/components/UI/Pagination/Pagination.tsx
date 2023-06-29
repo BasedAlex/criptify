@@ -1,4 +1,4 @@
-import { useEffect } from 'react'
+import * as React from 'react'
 
 interface IProps {
   limit: number
@@ -6,26 +6,13 @@ interface IProps {
   setOffset: (arg: number) => void
   currentPage: string
   setCurrentPage: (arg: string) => void
-  skip: boolean
-  setSkip: (arg: boolean) => void
 }
 
 export const Pagination = (props: IProps) => {
-  const {
-    limit,
-    offset,
-    setOffset,
-    currentPage,
-    setCurrentPage,
-    skip,
-    setSkip,
-  } = props
-
+  const { limit, offset, setOffset, currentPage, setCurrentPage } = props
   let actualPages: Array<string | number> = []
-
   const maxOffset = 2000
   let totalPages: number[] = []
-
   let i = 1
   while (i <= maxOffset / limit) {
     totalPages.push(i)
@@ -33,7 +20,6 @@ export const Pagination = (props: IProps) => {
   }
 
   let isValid = totalPages.length > 7 && currentPage !== '...'
-
   const paginate = () => {
     if (isValid && +currentPage === 1) {
       actualPages = totalPages.slice(0, 5)
@@ -94,6 +80,7 @@ export const Pagination = (props: IProps) => {
         +currentPage + 1,
         totalPages.length,
       ]
+
       setCurrentPage(currentPage)
     } else if (isValid && +currentPage === totalPages.length) {
       actualPages = [
@@ -104,6 +91,7 @@ export const Pagination = (props: IProps) => {
         +currentPage - 1,
         +currentPage,
       ]
+
       setCurrentPage(currentPage)
     } else if (isValid && +currentPage === totalPages.length - 1) {
       actualPages = [
@@ -114,8 +102,10 @@ export const Pagination = (props: IProps) => {
         +currentPage,
         +currentPage + 1,
       ]
+
       setCurrentPage(currentPage)
     }
+
     return actualPages
   }
 
@@ -138,11 +128,7 @@ export const Pagination = (props: IProps) => {
     }
   }
 
-  useEffect(() => {
-    setTimeout(() => setSkip(true), 3000)
-  }, [skip])
-
-  return skip ? (
+  return (
     <div className="container mx-auto">
       <div className="my-6 flex cursor-pointer items-center justify-center pt-5 text-gray-600 lg:mt-0">
         <button
@@ -205,7 +191,5 @@ export const Pagination = (props: IProps) => {
         </button>
       </div>
     </div>
-  ) : (
-    <></>
   )
 }

@@ -106,14 +106,11 @@ const Rates = () => {
           <Rate key={item.id} data={item} handleOpenModal={handleOpenModal} />
         ))}
       </div>
-
       <Pagination
         limit={limit}
         offset={offset}
         setOffset={setOffset}
         currentPage={currentPage}
-        skip={skip}
-        setSkip={setSkip}
         setCurrentPage={setCurrentPage}
       />
     </div>
