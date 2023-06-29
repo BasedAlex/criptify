@@ -27,7 +27,6 @@ const Rates = () => {
   const [offset, setOffset] = useState(0)
   const [limit, setLimit] = useState(100)
   const [currentPage, setCurrentPage] = useState('1')
-  const [skip, setSkip] = useState(false)
 
   const { data } = useGetAllAssetsQuery(
     { offset, limit },

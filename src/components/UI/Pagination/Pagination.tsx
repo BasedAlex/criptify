@@ -10,6 +10,7 @@ interface IProps {
 
 export const Pagination = (props: IProps) => {
   const { limit, offset, setOffset, currentPage, setCurrentPage } = props
+
   let actualPages: Array<string | number> = []
   const maxOffset = 2000
   let totalPages: number[] = []
@@ -20,6 +21,7 @@ export const Pagination = (props: IProps) => {
   }
 
   let isValid = totalPages.length > 7 && currentPage !== '...'
+
   const paginate = () => {
     if (isValid && +currentPage === 1) {
       actualPages = totalPages.slice(0, 5)
@@ -31,7 +33,9 @@ export const Pagination = (props: IProps) => {
         '...',
         totalPages.length,
       ]
-      setCurrentPage(currentPage)
+      React.useEffect(() => {
+        setCurrentPage(currentPage)
+      }, [])
     } else if (isValid && +currentPage > 1 && +currentPage === 2) {
       actualPages = [
         +currentPage - 1,
@@ -41,7 +45,9 @@ export const Pagination = (props: IProps) => {
         '...',
         totalPages.length,
       ]
-      setCurrentPage(currentPage)
+      React.useEffect(() => {
+        setCurrentPage(currentPage)
+      }, [])
     } else if (isValid && +currentPage > 1 && +currentPage === 3) {
       actualPages = [
         +currentPage - 2,
@@ -51,7 +57,9 @@ export const Pagination = (props: IProps) => {
         '...',
         totalPages.length,
       ]
-      setCurrentPage(currentPage)
+      React.useEffect(() => {
+        setCurrentPage(currentPage)
+      }, [])
     } else if (
       isValid &&
       +currentPage > 3 &&
@@ -66,7 +74,9 @@ export const Pagination = (props: IProps) => {
         '...',
         totalPages.length,
       ]
-      setCurrentPage(currentPage)
+      React.useEffect(() => {
+        setCurrentPage(currentPage)
+      }, [])
     } else if (
       isValid &&
       +currentPage > totalPages.length - 3 &&
@@ -80,8 +90,9 @@ export const Pagination = (props: IProps) => {
         +currentPage + 1,
         totalPages.length,
       ]
-
-      setCurrentPage(currentPage)
+      React.useEffect(() => {
+        setCurrentPage(currentPage)
+      }, [])
     } else if (isValid && +currentPage === totalPages.length) {
       actualPages = [
         1,
@@ -91,8 +102,9 @@ export const Pagination = (props: IProps) => {
         +currentPage - 1,
         +currentPage,
       ]
-
-      setCurrentPage(currentPage)
+      React.useEffect(() => {
+        setCurrentPage(currentPage)
+      }, [])
     } else if (isValid && +currentPage === totalPages.length - 1) {
       actualPages = [
         1,
@@ -103,7 +115,9 @@ export const Pagination = (props: IProps) => {
         +currentPage + 1,
       ]
 
-      setCurrentPage(currentPage)
+      React.useEffect(() => {
+        setCurrentPage(currentPage)
+      }, [])
     }
 
     return actualPages
