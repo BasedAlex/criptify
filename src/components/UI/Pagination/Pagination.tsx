@@ -131,7 +131,7 @@ export const Pagination = (props: IProps) => {
         setCurrentPage(nav.toString())
       }
     } else if (e.currentTarget.value === 'nextPage') {
-      if (offset <= maxOffset) {
+      if (offset + limit < maxOffset) {
         setOffset(offset + limit)
         let nav = +currentPage + 1
         setCurrentPage(nav.toString())
