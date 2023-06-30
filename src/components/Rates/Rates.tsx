@@ -11,6 +11,9 @@ import { decreaseBalance } from '@/store/slices/balanceSlice'
 import Subheader from './Subheader/Subheader'
 import { DM_Mono } from 'next/font/google'
 import { Pagination } from '../UI/Pagination/Pagination'
+import AlertCircle from '../../../public/svg/AlertCircle'
+import ToolTip from '../UI/ToolTip/ToolTip'
+import { TextSamples } from './TextSamples/TextSamples'
 
 const dmmono = DM_Mono({
   weight: ['400', '500'],
@@ -69,15 +72,36 @@ const Rates = () => {
     <div className="container mx-auto mt-16 ">
       <Subheader setLimit={setLimit} setOffset={setOffset} />
       <div
-        className={`${dmmono.variable} my-4 grid grid-cols-1n6 justify-items-center rounded-sm border border-cyan-400 bg-gray-50 py-3  text-xl font-bold leading-snug`}
+        className={`${dmmono.variable} my-4 grid cursor-pointer grid-cols-1n6 items-center justify-items-center rounded-sm border border-cyan-400 bg-gray-50  py-3 text-xl font-bold leading-snug`}
       >
         <p>#</p>
         <p>Name</p>
         <p>Price </p>
         <p>24h%</p>
-        <p>Market Cap</p>
-        <p>Volume(24h)</p>
-        <p>Supply</p>
+        <span className="flex items-center">
+          <p>Market Cap</p>
+          <ToolTip tooltip={TextSamples.MarketCap}>
+            <div className="cursor-default p-2">
+              <AlertCircle />
+            </div>
+          </ToolTip>
+        </span>
+        <span className="flex items-center">
+          <p>Volume(24h)</p>
+          <ToolTip tooltip={TextSamples.Volume}>
+            <div className="cursor-default p-2">
+              <AlertCircle />
+            </div>
+          </ToolTip>
+        </span>
+        <span className="flex items-center">
+          <p>Supply</p>
+          <ToolTip tooltip={TextSamples.Circulate}>
+            <div className="cursor-default p-2">
+              <AlertCircle />
+            </div>
+          </ToolTip>
+        </span>
       </div>
       {openPort && (
         <Modal active={openPort} setActive={setOpenPort}>
