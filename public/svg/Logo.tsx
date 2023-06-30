@@ -12,19 +12,19 @@ const Logo = () => {
       stroke="#000000"
       strokeWidth="1.376"
     >
-      <g id="SVGRepo_bgCarrier" stroke-width="0" />
+      <g id="SVGRepo_bgCarrier" strokeWidth="0" />
 
       <g
         id="SVGRepo_tracerCarrier"
         strokeLinecap="round"
         strokeLinejoin="round"
         stroke="#CCCCCC"
-        stroke-width="0.064"
+        strokeWidth="0.064"
       />
 
       <g id="SVGRepo_iconCarrier">
         {' '}
-        <g fill="none" fill-rule="evenodd">
+        <g fill="none" fillRule="evenodd">
           {' '}
           <circle cx="16" cy="16" fill="#87d9ee" r="16" />{' '}
           <path

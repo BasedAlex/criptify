@@ -1,6 +1,5 @@
 'use client'
-import Link from 'next/link'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useGetAllAssetsQuery } from '../../store/fetchAPI/apiSlice'
 import Rate from './Rate/Rate'
 import { useDispatch, useSelector } from 'react-redux'
@@ -10,12 +9,8 @@ import { addToPortfolio } from '@/store/slices/portfolioSlice'
 import { RootState } from '@/store/index'
 import { decreaseBalance } from '@/store/slices/balanceSlice'
 import Subheader from './Subheader/Subheader'
-import { DM_Mono, Montserrat } from 'next/font/google'
-
-const montserrat = Montserrat({
-  weight: ['400', '500', '600', '700', '800'],
-  subsets: ['latin'],
-})
+import { DM_Mono } from 'next/font/google'
+import { Pagination } from '../UI/Pagination/Pagination'
 
 const dmmono = DM_Mono({
   weight: ['400', '500'],
@@ -24,42 +19,21 @@ const dmmono = DM_Mono({
 })
 
 const Rates = () => {
-  console.log(useSelector((state) => state))
   const [openPort, setOpenPort] = useState(false)
   const [toast, setToast] = useState(false)
   const [message, setMessage] = useState<string>('')
   const [portItem, setPortItem] = useState<any>({})
   const [donate, setDonate] = useState(1)
   const [offset, setOffset] = useState(0)
-  const [limit, setLimit] = useState(20)
+  const [limit, setLimit] = useState(100)
+  const [currentPage, setCurrentPage] = useState('1')
+
   const { data } = useGetAllAssetsQuery(
     { offset, limit },
     {
       pollingInterval: 30000,
     }
   )
-
-  const paginate = (num = 20) => {
-    let pages: any = []
-    let i = 1
-    while (i <= num) {
-      pages.push(i)
-      i++
-    }
-    return pages
-  }
-
-  const handleLeft = () => {
-    if (offset > 0) {
-      setOffset(offset - limit)
-    }
-  }
-
-  const handleRight = () => {
-    if (offset <= 2000) {
-      setOffset(offset + limit)
-    }
-  }
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (Number(e.target.value) || Number(e.target.value) === 0) {
@@ -91,13 +65,9 @@ const Rates = () => {
     }
   }
 
-  const handlePaginate = (e: React.MouseEvent<HTMLDivElement>) => {
-    setOffset(Number(e.currentTarget.innerText) * limit)
-  }
-
   return (
     <div className="container mx-auto mt-16 ">
-      <Subheader setLimit={setLimit} />
+      <Subheader setLimit={setLimit} setOffset={setOffset} />
       <div
         className={`${dmmono.variable} my-4 grid grid-cols-1n6 justify-items-center rounded-sm border border-cyan-400 bg-gray-50 py-3  text-xl font-bold leading-snug`}
       >
@@ -109,7 +79,6 @@ const Rates = () => {
         <p>Volume(24h)</p>
         <p>Supply</p>
       </div>
-
       {openPort && (
         <Modal active={openPort} setActive={setOpenPort}>
           <div>
@@ -130,25 +99,19 @@ const Rates = () => {
           </div>
         </Modal>
       )}
-
       {toast && <Toaster toast={toast} setToast={setToast} message={message} />}
       <div className={`${dmmono.variable} text-xl shadow-lg`}>
         {data?.data?.map((item: any) => (
           <Rate key={item.id} data={item} handleOpenModal={handleOpenModal} />
         ))}
       </div>
-
-      <div className="mt-5 flex gap-4 bg-white ">
-        <div onClick={handleLeft}>Left</div>
-        <div className="flex gap-5 ">
-          {paginate().map((page: any, idx: any) => (
-            <div key={idx} onClick={(e) => handlePaginate(e)}>
-              {page}
-            </div>
-          ))}
-        </div>
-        <div onClick={handleRight}>Right</div>
-      </div>
+      <Pagination
+        limit={limit}
+        offset={offset}
+        setOffset={setOffset}
+        currentPage={currentPage}
+        setCurrentPage={setCurrentPage}
+      />
     </div>
   )
 }
