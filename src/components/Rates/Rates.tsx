@@ -28,7 +28,7 @@ const Rates = () => {
   const [portItem, setPortItem] = useState<any>({})
   const [donate, setDonate] = useState(1)
   const [offset, setOffset] = useState(0)
-  const [limit, setLimit] = useState(100)
+  const [limit, setLimit] = useState(300)
   const [currentPage, setCurrentPage] = useState('1')
 
   const { data } = useGetAllAssetsQuery(

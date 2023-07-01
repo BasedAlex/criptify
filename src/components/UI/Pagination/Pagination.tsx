@@ -1,3 +1,4 @@
+import usePagination from '@/hooks/usePagination'
 import * as React from 'react'
 
 interface IProps {
@@ -11,117 +12,7 @@ interface IProps {
 export const Pagination = (props: IProps) => {
   const { limit, offset, setOffset, currentPage, setCurrentPage } = props
 
-  let actualPages: Array<string | number> = []
-  const maxOffset = 2000
-  let totalPages: number[] = []
-  let i = 1
-  while (i <= maxOffset / limit) {
-    totalPages.push(i)
-    i++
-  }
-
-  let isValid = totalPages.length > 7 && currentPage !== '...'
-
-  const paginate = () => {
-    if (isValid && +currentPage === 1) {
-      actualPages = totalPages.slice(0, 5)
-      actualPages = [
-        +currentPage,
-        +currentPage + 1,
-        +currentPage + 2,
-        +currentPage + 3,
-        '...',
-        totalPages.length,
-      ]
-      React.useEffect(() => {
-        setCurrentPage(currentPage)
-      }, [])
-    } else if (isValid && +currentPage > 1 && +currentPage === 2) {
-      actualPages = [
-        +currentPage - 1,
-        +currentPage,
-        +currentPage + 1,
-        +currentPage + 2,
-        '...',
-        totalPages.length,
-      ]
-      React.useEffect(() => {
-        setCurrentPage(currentPage)
-      }, [])
-    } else if (isValid && +currentPage > 1 && +currentPage === 3) {
-      actualPages = [
-        +currentPage - 2,
-        +currentPage - 1,
-        +currentPage,
-        +currentPage + 1,
-        '...',
-        totalPages.length,
-      ]
-      React.useEffect(() => {
-        setCurrentPage(currentPage)
-      }, [])
-    } else if (
-      isValid &&
-      +currentPage > 3 &&
-      +currentPage < totalPages.length - 2
-    ) {
-      actualPages = [
-        1,
-        '...',
-        +currentPage - 1,
-        +currentPage,
-        +currentPage + 1,
-        '...',
-        totalPages.length,
-      ]
-      React.useEffect(() => {
-        setCurrentPage(currentPage)
-      }, [])
-    } else if (
-      isValid &&
-      +currentPage > totalPages.length - 3 &&
-      +currentPage < totalPages.length - 1
-    ) {
-      actualPages = [
-        1,
-        '...',
-        +currentPage - 1,
-        +currentPage,
-        +currentPage + 1,
-        totalPages.length,
-      ]
-      React.useEffect(() => {
-        setCurrentPage(currentPage)
-      }, [])
-    } else if (isValid && +currentPage === totalPages.length) {
-      actualPages = [
-        1,
-        '...',
-        +currentPage - 3,
-        +currentPage - 2,
-        +currentPage - 1,
-        +currentPage,
-      ]
-      React.useEffect(() => {
-        setCurrentPage(currentPage)
-      }, [])
-    } else if (isValid && +currentPage === totalPages.length - 1) {
-      actualPages = [
-        1,
-        '...',
-        +currentPage - 2,
-        +currentPage - 1,
-        +currentPage,
-        +currentPage + 1,
-      ]
-
-      React.useEffect(() => {
-        setCurrentPage(currentPage)
-      }, [])
-    }
-
-    return actualPages
-  }
+  const actualPages = usePagination({ limit, currentPage })
 
   const handlePaginate = (e: React.MouseEvent<HTMLButtonElement>) => {
     if (e.currentTarget.value === 'prevPage') {
@@ -131,11 +22,13 @@ export const Pagination = (props: IProps) => {
         setCurrentPage(nav.toString())
       }
     } else if (e.currentTarget.value === 'nextPage') {
-      if (offset + limit < maxOffset) {
+      if (offset + limit < 2200) {
+        // 300 1800 300 22100
         setOffset(offset + limit)
         let nav = +currentPage + 1
         setCurrentPage(nav.toString())
       }
+      return
     } else if (e.currentTarget.value !== '...') {
       setCurrentPage(e.currentTarget.value)
       setOffset((+e.currentTarget.value - 1) * limit)
@@ -166,7 +59,7 @@ export const Pagination = (props: IProps) => {
           </svg>
         </button>
         <div className="flex gap-5 ">
-          {paginate().map((page: number | string, idx: number) => (
+          {actualPages.map((page: number | string, idx: number) => (
             <button
               className={
                 page === +currentPage

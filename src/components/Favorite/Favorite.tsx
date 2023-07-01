@@ -56,7 +56,7 @@ const Favorite = () => {
           key={item.id}
           className="container mx-auto grid grid-cols-1n6 items-center"
         >
-          <p className="">{item.rank}</p>
+          <p>{item.rank}</p>
           <p>{item.name}</p>
           <p>{Number(item.priceUsd).toFixed(6)}</p>
           <p>{Number(item.changePercent24Hr).toFixed(6)}</p>
