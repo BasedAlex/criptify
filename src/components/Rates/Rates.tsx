@@ -28,8 +28,10 @@ const Rates = () => {
   const [portItem, setPortItem] = useState<any>({})
   const [donate, setDonate] = useState(1)
   const [offset, setOffset] = useState(0)
-  const [limit, setLimit] = useState(300)
+  const [limit, setLimit] = useState(100)
   const [currentPage, setCurrentPage] = useState('1')
+
+  const items = ['25', '50', '100']
 
   const { data } = useGetAllAssetsQuery(
     { offset, limit },
@@ -70,7 +72,7 @@ const Rates = () => {
 
   return (
     <div className="container mx-auto mt-16 ">
-      <Subheader setLimit={setLimit} setOffset={setOffset} />
+      <Subheader setLimit={setLimit} setOffset={setOffset} items={items} />
       <div
         className={`${dmmono.variable} my-4 grid cursor-pointer grid-cols-1n6 items-center justify-items-center rounded-sm border border-cyan-400 bg-gray-50  py-3 text-xl font-bold leading-snug`}
       >
