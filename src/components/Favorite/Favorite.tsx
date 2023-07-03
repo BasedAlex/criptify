@@ -7,6 +7,7 @@ import AlertCircle from '../../../public/svg/AlertCircle'
 import { TextSamples } from '../Rates/TextSamples/TextSamples'
 import Subheader from '../Rates/Subheader/Subheader'
 import { useState } from 'react'
+import Link from 'next/link'
 
 const Favorite = () => {
   const data = useSelector((state: any) => state.favorite)
@@ -104,8 +105,14 @@ const Favorite = () => {
       </div>
     </div>
   ) : (
-    <div className="flex justify-center">
-      <div>No items! Start by adding your favorite coins!</div>
+    <div className="my-5 flex justify-center">
+      <div>
+        No items! Start by adding your favorite coins from the
+        <Link href="/" className="text-blue-500 hover:text-blue-800">
+          {' '}
+          main page!
+        </Link>
+      </div>
     </div>
   )
 }

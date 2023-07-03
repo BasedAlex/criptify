@@ -82,7 +82,7 @@ const Rates = () => {
         <p>24h%</p>
         <span className="flex items-center">
           <p>Market Cap</p>
-          <ToolTip tooltip={TextSamples.MarketCap}>
+          <ToolTip tooltip={TextSamples.MarketCap} leftPos={true}>
             <div className="cursor-default p-2">
               <AlertCircle />
             </div>

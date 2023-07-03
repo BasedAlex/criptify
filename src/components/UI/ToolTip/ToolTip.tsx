@@ -24,10 +24,11 @@ const ToolTip: FC<Props> = ({
       onMouseEnter={({ clientX }) => {
         if (!tooltipRef.current || !container.current) return
         const { left } = container.current.getBoundingClientRect()
+        console.log(leftPos)
         leftPos
           ? (tooltipRef.current.style.left = clientX - left + 'px')
-          : (tooltipRef.current.style.left = (clientX - left) / 50 + 'vh')
-        tooltipRef.current.style.top = '12vh'
+          : (tooltipRef.current.style.left = (clientX - left) / 10 + 'vh')
+        tooltipRef.current.style.top = '7vh'
         tooltipRef.current.style.left = clientX - left + 'px'
       }}
       className={'group relative inline-block select-none'}
