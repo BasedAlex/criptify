@@ -27,7 +27,7 @@ const Subheader: FC<SubheaderProps> = ({
   }
 
   return (
-    <div className="flex justify-between  gap-4 pt-4 text-white">
+    <div className="flex justify-between  gap-4 py-4 text-white">
       <div className="flex items-center">
         <Link
           href="watchlist"

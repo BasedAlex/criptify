@@ -8,6 +8,9 @@ import { TextSamples } from '../Rates/TextSamples/TextSamples'
 import Subheader from '../Rates/Subheader/Subheader'
 import { useState } from 'react'
 import Link from 'next/link'
+import Remove from '../../../public/svg/Remove'
+import Minus from '../../../public/svg/Minus'
+import Plus from '../../../public/svg/Plus'
 
 const Favorite = () => {
   const data = useSelector((state: any) => state.favorite)
@@ -22,21 +25,21 @@ const Favorite = () => {
     dispatch(removeItemFromPortfolio(data))
   }
 
-  const text = 'text-black'
   const items = ['5', '10', '25']
   console.log(data.favorite)
 
   return data.favorite.length ? (
-    <div className="container mx-auto mt-10">
-      <div className="mb-2 items-center justify-between">
+    <div className="container mx-auto mt-5">
+      <div className="container -z-40  w-full rounded-lg border bg-gradient-to-r from-indigo-500 from-10% via-sky-600 via-40% to-cyan-700 to-60%">
         <Subheader
           setLimit={setLimit}
           setOffset={setOffset}
-          text={text}
           items={items}
+          text={'mx-5'}
         />
       </div>
-      <div className=" grid grid-cols-1n6 items-center border-b border-t px-10">
+      <div className="mb-2 items-center justify-between"></div>
+      <div className="mt-8 grid grid-cols-1n6 items-center border-b border-t px-10">
         <p className="">#</p>
         <p>Name</p>
         <p>Price</p>
@@ -79,26 +82,14 @@ const Favorite = () => {
             <p>{Number(item.marketCapUsd).toFixed(6)}</p>
             <p>{Number(item.volumeUsd24Hr).toFixed(6)}</p>
             <p>{Number(item.supply).toFixed(6)}</p>
-            <div className="flex gap-4">
-              <button className="w-full rounded-2xl	 border border-sky-400">
-                Add More
-              </button>
-              <button
-                className="w-full rounded-2xl border border-sky-400"
-                onClick={() => {
+            <div className="flex items-center gap-4">
+              <Plus />
+              <Minus
+                onRemoveOne={() => {
                   handleRemoveOne(item)
                 }}
-              >
-                Sell One
-              </button>
-              <button
-                className="w-full rounded-2xl border border-sky-400"
-                onClick={() => {
-                  handleRemove(item)
-                }}
-              >
-                Sell All
-              </button>
+              />
+              <Remove onRemove={() => handleRemove(item)} />
             </div>
           </div>
         ))}

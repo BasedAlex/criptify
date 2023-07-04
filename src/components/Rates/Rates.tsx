@@ -71,10 +71,10 @@ const Rates = () => {
   }
 
   return (
-    <div className="container mx-auto mt-16 ">
+    <div className="container mx-auto mt-16">
       <Subheader setLimit={setLimit} setOffset={setOffset} items={items} />
       <div
-        className={`${dmmono.variable} my-4 grid cursor-pointer grid-cols-1n6 items-center justify-items-center rounded-sm border border-cyan-400 bg-gray-50  py-3 text-xl font-bold leading-snug`}
+        className={`${dmmono.variable} mb-4 grid cursor-pointer grid-cols-1n6 items-center justify-items-center rounded-sm border border-cyan-400 bg-gray-50  py-3 text-xl font-bold leading-snug`}
       >
         <p>#</p>
         <p>Name</p>
