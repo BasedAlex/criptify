@@ -9,11 +9,12 @@ import { addToPortfolio } from '@/store/slices/portfolioSlice'
 import { RootState } from '@/store/index'
 import { decreaseBalance } from '@/store/slices/balanceSlice'
 import Subheader from './Subheader/Subheader'
-import { DM_Mono } from 'next/font/google'
+
 import { Pagination } from '../UI/Pagination/Pagination'
 import AlertCircle from '../../../public/svg/AlertCircle'
 import ToolTip from '../UI/ToolTip/ToolTip'
 import { TextSamples } from './TextSamples/TextSamples'
+import { DM_Mono } from 'next/font/google'
 
 const dmmono = DM_Mono({
   weight: ['400', '500'],

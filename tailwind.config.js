@@ -17,11 +17,12 @@ module.exports = {
       },
     },
     extend: {
-      fontFamily:{
-        mono: ['var(--font-dm_mono)']
+      fontFamily: {
+        mono: ['var(--font-dm_mono)'],
       },
       gridTemplateColumns: {
         '1n6': '80px, repeat(7, minmax(0, 1fr))',
+        '1n7': '80px, repeat(7, minmax(0, 1fr)), 80px',
         '2n6': '40px, 80px, repeat(7, minmax(0, 1fr))',
       },
       colors: {
