@@ -31,13 +31,13 @@ const ToolTip: FC<Props> = ({
         tooltipRef.current.style.top = '7vh'
         tooltipRef.current.style.left = clientX - left + 'px'
       }}
-      className={'group relative inline-block select-none'}
+      className={' group relative inline-block select-none'}
     >
       <div className={classname}>{children}</div>
       {tooltip && (
         <span
           ref={tooltipRef}
-          className="invisible absolute top-full -mt-7 w-80 select-text rounded	bg-black px-2.5 py-2 text-white  opacity-0	transition	group-hover:visible	group-hover:opacity-100"
+          className=" invisible absolute top-full -mt-7 w-80 select-text rounded	bg-black px-2.5 py-2 text-white  opacity-0	transition	group-hover:visible	group-hover:opacity-100"
         >
           {tooltip}
         </span>

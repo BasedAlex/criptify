@@ -1,16 +1,13 @@
 'use client'
-import { removeFromFav } from '@/store/slices/initialSlice'
-import { removeItemFromPortfolio } from '@/store/slices/portfolioSlice'
+import { addToFav, removeFromFav } from '@/store/slices/initialSlice'
 import { useDispatch, useSelector } from 'react-redux'
 import ToolTip from '../UI/ToolTip/ToolTip'
 import AlertCircle from '../../../public/svg/AlertCircle'
 import { TextSamples } from '../Rates/TextSamples/TextSamples'
 import Subheader from '../Rates/Subheader/Subheader'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import Link from 'next/link'
-import Remove from '../../../public/svg/Remove'
-import Minus from '../../../public/svg/Minus'
-import Plus from '../../../public/svg/Plus'
+import { motion } from 'framer-motion'
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -21,7 +18,10 @@ import {
 } from '../UI/Dropbox/Dropbox'
 import { DotsVerticalIcon } from '@radix-ui/react-icons'
 import { DM_Mono, Montserrat } from 'next/font/google'
-import { transform } from '../../lib/transform'
+import Star from '../../../public/svg/Star'
+import { Pagination } from '../UI/Pagination/Pagination'
+import useSetDataToStore from '@/hooks/useSetDataToStore'
+import FixedParagraph from '../UI/FixedParagraph/FixedParagraph'
 
 const montserrat = Montserrat({
   weight: ['400', '500', '600', '700', '800'],
@@ -36,19 +36,37 @@ const dmmono = DM_Mono({
 
 const Favorite = () => {
   const data = useSelector((state: any) => state.favorite)
+  const faved = useSelector((state: any) => state.favorite.favorite)
+
   const dispatch = useDispatch()
   const [offset, setOffset] = useState(0)
-  const [limit, setLimit] = useState(100)
+  const [limit, setLimit] = useState(5)
+  const [currentPage, setCurrentPage] = useState('1')
 
-  // const handleRemove = (data: any) => {
-  //   dispatch(removeFromFav(data))
-  // }
-  // const handleRemoveOne = (data: any) => {
-  //   dispatch(removeItemFromPortfolio(data))
-  // }
+  const setData = useSetDataToStore({
+    data: faved,
+    dispatch,
+    actionToRemove: removeFromFav,
+    actionToAdd: addToFav,
+  })
+
+  const paginatedArr = () => {
+    const arr: any[] = []
+    for (let i = 0; i < offset + limit; i++) {
+      if (!data?.favorite[i]) {
+        return arr
+      }
+      arr.push(data?.favorite[i])
+    }
+    console.log(arr)
+
+    return arr
+  }
+
+  // console.log(newArr)
+  console.log(faved.favorite ?? paginatedArr(), offset + limit)
 
   const items = ['5', '10', '25']
-  console.log(data.favorite)
 
   return data.favorite.length ? (
     <div className={`${dmmono.variable} container mx-auto mt-5`}>
@@ -71,7 +89,7 @@ const Favorite = () => {
         <span className="flex items-center">
           <p>Market Cap</p>
           <ToolTip tooltip={TextSamples.MarketCap}>
-            <div className="cursor-default p-2">
+            <div className=" cursor-default px-2 pt-1">
               <AlertCircle />
             </div>
           </ToolTip>
@@ -79,7 +97,7 @@ const Favorite = () => {
         <span className="flex items-center">
           <p>Volume(24h)</p>
           <ToolTip tooltip={TextSamples.Volume}>
-            <div className="cursor-default p-2">
+            <div className="cursor-default px-2 pt-1">
               <AlertCircle />
             </div>
           </ToolTip>
@@ -87,35 +105,53 @@ const Favorite = () => {
         <span className="flex items-center">
           <p>Supply</p>
           <ToolTip tooltip={TextSamples.Circulate}>
-            <div className="cursor-default p-2">
+            <div className="cursor-default px-2 pt-1">
               <AlertCircle />
             </div>
           </ToolTip>
         </span>
       </div>
       <div className={montserrat.className}>
-        {data.favorite.map((item: any) => (
-          <div
+        {paginatedArr()?.map((item: any) => (
+          <motion.div
             key={item.id}
-            className={`container mx-auto grid grid-cols-1n7 items-center justify-center justify-items-center border-b  pb-2 pt-2`}
+            className={`container  mx-auto grid grid-cols-1n7 items-center justify-center justify-items-center border-b  pb-2 pt-2`}
           >
-            <p className={dmmono.className}>{item.rank}</p>
+            <div
+              className="accordion-down my-auto flex items-center justify-items-center		"
+              onClick={() => setData(item)}
+            >
+              <div className="pb-3 pl-3 pr-0 pt-3">
+                <Star
+                  color={
+                    faved.find((fav: any) => fav.id === item.id)
+                      ? '#000'
+                      : '#fff'
+                  }
+                />
+              </div>
+              <p className={`align-self p-3 ${dmmono.className}`}>
+                {item.rank}
+              </p>
+            </div>
             <p className={dmmono.className}>{item.name}</p>
-            <p className={montserrat.className}>
-              {Number(item.priceUsd).toFixed(2)}
-            </p>
-            <p className={montserrat.className}>
-              {Number(item.changePercent24Hr).toFixed(2)}
-            </p>
-            <p className={montserrat.className}>
-              {transform(Number(item.marketCapUsd))}
-            </p>
-            <p className={montserrat.className}>
-              {Number(item.volumeUsd24Hr).toFixed(2)}
-            </p>
-            <p className={montserrat.className}>
-              {Number(item.supply).toFixed(2)}
-            </p>
+            <FixedParagraph fixed={2} value={item.priceUsd} isTooltip={true} />
+            <FixedParagraph fixed={2} value={item.changePercent24Hr} />
+            <FixedParagraph
+              fixed={2}
+              value={item.marketCapUsd}
+              withTransform={true}
+            />
+            <FixedParagraph
+              fixed={2}
+              value={item.volumeUsd24Hr}
+              withTransform={true}
+            />
+            <FixedParagraph
+              fixed={2}
+              value={item.supply}
+              withTransform={true}
+            />
             <div className="flex items-center gap-4"></div>
             <div>
               <DropdownMenu>
@@ -132,9 +168,19 @@ const Favorite = () => {
                 </DropdownMenuContent>
               </DropdownMenu>
             </div>
-          </div>
+          </motion.div>
         ))}
       </div>
+      <Pagination
+        limit={limit}
+        offset={offset}
+        maxOffset={faved.length}
+        setOffset={setOffset}
+        // setLimit={setLimit}
+        currentPage={currentPage}
+        endless={true}
+        setCurrentPage={setCurrentPage}
+      />
     </div>
   ) : (
     <div className="my-5 flex justify-center">

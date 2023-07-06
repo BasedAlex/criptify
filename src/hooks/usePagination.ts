@@ -1,14 +1,15 @@
 export default function usePagination({
   limit,
   currentPage,
+  maxOffset,
 }: {
   limit: number
   currentPage: string
+  maxOffset?: number
 }) {
-  const maxOffset = 2200
   let totalPages: number[] = []
   let i = 1
-  while (i <= Math.ceil(maxOffset / limit)) {
+  while (i <= Math.ceil((maxOffset ? maxOffset : 2200) / limit)) {
     totalPages.push(i)
     i++
   }

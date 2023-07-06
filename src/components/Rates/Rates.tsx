@@ -81,18 +81,18 @@ const Rates = () => {
         <p>Name</p>
         <p>Price </p>
         <p>24h%</p>
-        <span className="flex items-center">
+        <span className="flex items-center ">
           <p>Market Cap</p>
           <ToolTip tooltip={TextSamples.MarketCap} leftPos={true}>
-            <div className="cursor-default p-2">
+            <div className="cursor-default px-2 pt-1">
               <AlertCircle />
             </div>
           </ToolTip>
         </span>
-        <span className="flex items-center">
+        <span className="flex items-center justify-items-center">
           <p>Volume(24h)</p>
           <ToolTip tooltip={TextSamples.Volume}>
-            <div className="cursor-default p-2">
+            <div className="cursor-default px-2 pt-1">
               <AlertCircle />
             </div>
           </ToolTip>
@@ -100,7 +100,7 @@ const Rates = () => {
         <span className="flex items-center">
           <p>Supply</p>
           <ToolTip tooltip={TextSamples.Circulate}>
-            <div className="cursor-default p-2">
+            <div className="cursor-default self-end px-2 pt-1">
               <AlertCircle />
             </div>
           </ToolTip>
