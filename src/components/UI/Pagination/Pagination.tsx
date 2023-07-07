@@ -50,8 +50,6 @@ export const Pagination = (props: IProps) => {
     }
   }
 
-  console.log(offset, limit, maxOffset)
-
   return (
     <div className="container mx-auto">
       <div className="my-6 flex cursor-pointer items-center justify-center pt-5 text-gray-600 lg:mt-0">

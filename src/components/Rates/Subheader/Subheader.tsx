@@ -1,14 +1,7 @@
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '@/components/UI/Select/Select'
+import { Selector } from '@/components/UI/Selector/Selector'
 import Link from 'next/link'
 import type { FC } from 'react'
-
-interface SubheaderProps {
+export interface SubheaderProps {
   setLimit: (limit: number) => void
   setOffset: (offset: number) => void
   text?: string
@@ -21,11 +14,6 @@ const Subheader: FC<SubheaderProps> = ({
   text,
   items,
 }) => {
-  const changeLimit = (value: string) => {
-    setLimit(Number(value))
-    setOffset(0)
-  }
-
   return (
     <div className="flex justify-between  gap-4 py-4 text-white">
       <div className="flex items-center">
@@ -42,22 +30,12 @@ const Subheader: FC<SubheaderProps> = ({
           Portfolio
         </Link>
       </div>
-      <Select onValueChange={(value) => changeLimit(value)}>
-        <SelectTrigger className={`w-[180px] ${text}`}>
-          <SelectValue placeholder="Items on page" />
-        </SelectTrigger>
-        <SelectContent>
-          <SelectItem value={items ? items[0] : '20'}>
-            {items ? items[0] : '25'}
-          </SelectItem>
-          <SelectItem value={items ? items[1] : '50'}>
-            {items ? items[1] : '50'}
-          </SelectItem>
-          <SelectItem value={items ? items[2] : '100'}>
-            {items ? items[2] : '100'}
-          </SelectItem>
-        </SelectContent>
-      </Select>
+      <Selector
+        text={text}
+        setLimit={setLimit}
+        setOffset={setOffset}
+        items={items}
+      />
     </div>
   )
 }

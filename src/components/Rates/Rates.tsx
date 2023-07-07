@@ -1,5 +1,5 @@
 'use client'
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import { useGetAllAssetsQuery } from '../../store/fetchAPI/apiSlice'
 import Rate from './Rate/Rate'
 import { useDispatch, useSelector } from 'react-redux'
@@ -9,12 +9,11 @@ import { addToPortfolio } from '@/store/slices/portfolioSlice'
 import { RootState } from '@/store/index'
 import { decreaseBalance } from '@/store/slices/balanceSlice'
 import Subheader from './Subheader/Subheader'
-
 import { Pagination } from '../UI/Pagination/Pagination'
-import AlertCircle from '../../../public/svg/AlertCircle'
-import ToolTip from '../UI/ToolTip/ToolTip'
 import { TextSamples } from './TextSamples/TextSamples'
 import { DM_Mono } from 'next/font/google'
+import { FULL_ITEMS } from '../../Constants'
+import Column from '../UI/Column/Column'
 
 const dmmono = DM_Mono({
   weight: ['400', '500'],
@@ -31,8 +30,6 @@ const Rates = () => {
   const [offset, setOffset] = useState(0)
   const [limit, setLimit] = useState(100)
   const [currentPage, setCurrentPage] = useState('1')
-
-  const items = ['25', '50', '100']
 
   const { data } = useGetAllAssetsQuery(
     { offset, limit },
@@ -62,7 +59,6 @@ const Rates = () => {
       setTimeout(() => {
         setToast(false)
       }, 5000)
-      console.log('donate', donate, item.priceUsd * donate)
       dispatch(addToPortfolio({ ...item, donate }))
       dispatch(decreaseBalance(item.priceUsd * donate))
       setOpenPort(!openPort)
@@ -73,7 +69,7 @@ const Rates = () => {
 
   return (
     <div className="container mx-auto mt-16">
-      <Subheader setLimit={setLimit} setOffset={setOffset} items={items} />
+      <Subheader setLimit={setLimit} setOffset={setOffset} items={FULL_ITEMS} />
       <div
         className={`${dmmono.variable} mb-4 grid cursor-pointer grid-cols-1n6 items-center justify-items-center rounded-sm border border-cyan-400 bg-gray-50  py-3 text-xl font-bold leading-snug`}
       >
@@ -81,30 +77,9 @@ const Rates = () => {
         <p>Name</p>
         <p>Price </p>
         <p>24h%</p>
-        <span className="flex items-center ">
-          <p>Market Cap</p>
-          <ToolTip tooltip={TextSamples.MarketCap} leftPos={true}>
-            <div className="cursor-default px-2 pt-1">
-              <AlertCircle />
-            </div>
-          </ToolTip>
-        </span>
-        <span className="flex items-center justify-items-center">
-          <p>Volume(24h)</p>
-          <ToolTip tooltip={TextSamples.Volume}>
-            <div className="cursor-default px-2 pt-1">
-              <AlertCircle />
-            </div>
-          </ToolTip>
-        </span>
-        <span className="flex items-center">
-          <p>Supply</p>
-          <ToolTip tooltip={TextSamples.Circulate}>
-            <div className="cursor-default self-end px-2 pt-1">
-              <AlertCircle />
-            </div>
-          </ToolTip>
-        </span>
+        <Column name={'Market Cap'} tooltip={TextSamples.MarketCap} />
+        <Column name={'Volume(24h)'} tooltip={TextSamples.Volume} />
+        <Column name={'Supply'} tooltip={TextSamples.Volume} />
       </div>
       {openPort && (
         <Modal active={openPort} setActive={setOpenPort}>
