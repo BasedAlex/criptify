@@ -1,5 +1,5 @@
 'use client'
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import { useGetAllAssetsQuery } from '../../store/fetchAPI/apiSlice'
 import Rate from './Rate/Rate'
 import { useDispatch, useSelector } from 'react-redux'
@@ -9,13 +9,21 @@ import { addToPortfolio } from '@/store/slices/portfolioSlice'
 import { RootState } from '@/store/index'
 import { decreaseBalance } from '@/store/slices/balanceSlice'
 import Subheader from './Subheader/Subheader'
-import { DM_Mono } from 'next/font/google'
 import { Pagination } from '../UI/Pagination/Pagination'
+import { TextSamples } from './TextSamples/TextSamples'
+import { DM_Mono, Montserrat } from 'next/font/google'
+import { FULL_ITEMS } from '../../Constants'
+import Column from '../UI/Column/Column'
 
 const dmmono = DM_Mono({
   weight: ['400', '500'],
   subsets: ['latin'],
   variable: '--font-dm_mono',
+})
+
+const montserrat = Montserrat({
+  weight: ['400', '500', '600', '700', '800'],
+  subsets: ['latin'],
 })
 
 const Rates = () => {
@@ -56,7 +64,6 @@ const Rates = () => {
       setTimeout(() => {
         setToast(false)
       }, 5000)
-      console.log('donate', donate, item.priceUsd * donate)
       dispatch(addToPortfolio({ ...item, donate }))
       dispatch(decreaseBalance(item.priceUsd * donate))
       setOpenPort(!openPort)
@@ -66,18 +73,18 @@ const Rates = () => {
   }
 
   return (
-    <div className="container mx-auto mt-16 ">
-      <Subheader setLimit={setLimit} setOffset={setOffset} />
+    <div className="container mx-auto mt-16">
+      <Subheader setLimit={setLimit} setOffset={setOffset} items={FULL_ITEMS} />
       <div
-        className={`${dmmono.variable} my-4 grid grid-cols-1n6 justify-items-center rounded-sm border border-cyan-400 bg-gray-50 py-3  text-xl font-bold leading-snug`}
+        className={`${montserrat.className} mb-4 grid cursor-pointer grid-cols-1n6 items-center justify-items-center rounded-sm border border-cyan-400 bg-gray-50 py-3 text-lg font-bold leading-snug`}
       >
         <p>#</p>
         <p>Name</p>
         <p>Price </p>
         <p>24h%</p>
-        <p>Market Cap</p>
-        <p>Volume(24h)</p>
-        <p>Supply</p>
+        <Column name={'Market Cap'} tooltip={TextSamples.MarketCap} />
+        <Column name={'Volume(24h)'} tooltip={TextSamples.Volume} />
+        <Column name={'Supply'} tooltip={TextSamples.Circulate} />
       </div>
       {openPort && (
         <Modal active={openPort} setActive={setOpenPort}>

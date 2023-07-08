@@ -1,50 +1,41 @@
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '@/components/UI/Select/Select'
+import { Selector } from '@/components/UI/Selector/Selector'
 import Link from 'next/link'
 import type { FC } from 'react'
-
-interface SubheaderProps {
+export interface SubheaderProps {
   setLimit: (limit: number) => void
   setOffset: (offset: number) => void
+  text?: string
+  items?: string[]
 }
 
-const Subheader: FC<SubheaderProps> = ({ setLimit, setOffset }) => {
-  const changeLimit = (value: string) => {
-    setLimit(Number(value))
-    setOffset(0)
-  }
-
+const Subheader: FC<SubheaderProps> = ({
+  setLimit,
+  setOffset,
+  text,
+  items,
+}) => {
   return (
-    <div className="flex justify-between  gap-4 pt-4 text-white">
-      <div>
+    <div className="flex justify-between  gap-4 py-4 text-white">
+      <div className="flex items-center">
         <Link
           href="watchlist"
-          className="hover:text-semibold rounded-sm border-0 px-2 hover:bg-cyan-600 "
+          className={`hover:text-semibold rounded-sm border-0 px-2 ${text} hover:bg-cyan-600`}
         >
           Watchlist
         </Link>
         <Link
           href="portfolio"
-          className="hover:text-semibold rounded-sm border-0 px-2 hover:bg-cyan-600 "
+          className={`hover:text-semibold rounded-sm border-0 px-2 ${text} hover:bg-cyan-600`}
         >
           Portfolio
         </Link>
       </div>
-      <Select onValueChange={(value) => changeLimit(value)}>
-        <SelectTrigger className="w-[180px]">
-          <SelectValue placeholder="Items on page" />
-        </SelectTrigger>
-        <SelectContent>
-          <SelectItem value="20">20</SelectItem>
-          <SelectItem value="50">50</SelectItem>
-          <SelectItem value="100">100</SelectItem>
-        </SelectContent>
-      </Select>
+      <Selector
+        text={text}
+        setLimit={setLimit}
+        setOffset={setOffset}
+        items={items}
+      />
     </div>
   )
 }
