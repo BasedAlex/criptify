@@ -15,6 +15,7 @@ import useSetDataToStore from '@/hooks/useSetDataToStore'
 import FixedParagraph from '../UI/FixedParagraph/FixedParagraph'
 import { FAVED_ITEMS } from '../../Constants'
 import Dropdown from '../UI/Dropdown/Dropdown'
+import Column from '../UI/Column/Column'
 
 const montserrat = Montserrat({
   weight: ['400', '500', '600', '700', '800'],
@@ -74,30 +75,9 @@ const Favorite = () => {
             <p>Name</p>
             <p>Price</p>
             <p>24h %</p>
-            <span className="flex items-center">
-              <p>Market Cap</p>
-              <ToolTip tooltip={TextSamples.MarketCap}>
-                <div className="cursor-default px-2">
-                  <AlertCircle />
-                </div>
-              </ToolTip>
-            </span>
-            <span className="flex items-center">
-              <p>Volume(24h)</p>
-              <ToolTip tooltip={TextSamples.Volume}>
-                <div className="cursor-default px-2">
-                  <AlertCircle />
-                </div>
-              </ToolTip>
-            </span>
-            <span className="flex items-center">
-              <p>Supply</p>
-              <ToolTip tooltip={TextSamples.Circulate}>
-                <div className="cursor-default px-2">
-                  <AlertCircle />
-                </div>
-              </ToolTip>
-            </span>
+            <Column name={'Market Cap'} tooltip={TextSamples.MarketCap} />
+            <Column name={'Volume(24h)'} tooltip={TextSamples.Volume} />
+            <Column name={'Supply'} tooltip={TextSamples.Circulate} />
           </div>
           <div className={montserrat.className}>
             {paginatedArr()?.map((item: any) => (

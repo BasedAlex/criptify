@@ -19,23 +19,21 @@ export const Selector: FC<SubheaderProps> = ({
     setOffset(0)
   }
   return (
-    <div>
-      <Select onValueChange={(value) => changeLimit(value)}>
-        <SelectTrigger className={`w-[180px] ${text}`}>
-          <SelectValue placeholder="Items on page" />
-        </SelectTrigger>
-        <SelectContent>
-          <SelectItem value={items ? items[0] : '20'}>
-            {items ? items[0] : '25'}
-          </SelectItem>
-          <SelectItem value={items ? items[1] : '50'}>
-            {items ? items[1] : '50'}
-          </SelectItem>
-          <SelectItem value={items ? items[2] : '100'}>
-            {items ? items[2] : '100'}
-          </SelectItem>
-        </SelectContent>
-      </Select>
-    </div>
+    <Select onValueChange={(value) => changeLimit(value)}>
+      <SelectTrigger className={`w-[180px] ${text}`}>
+        <SelectValue placeholder="Items on page" />
+      </SelectTrigger>
+      <SelectContent>
+        <SelectItem value={items ? items[0] : '20'}>
+          {items ? items[0] : '25'}
+        </SelectItem>
+        <SelectItem value={items ? items[1] : '50'}>
+          {items ? items[1] : '50'}
+        </SelectItem>
+        <SelectItem value={items ? items[2] : '100'}>
+          {items ? items[2] : '100'}
+        </SelectItem>
+      </SelectContent>
+    </Select>
   )
 }

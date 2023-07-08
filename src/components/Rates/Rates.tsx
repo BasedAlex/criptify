@@ -11,7 +11,7 @@ import { decreaseBalance } from '@/store/slices/balanceSlice'
 import Subheader from './Subheader/Subheader'
 import { Pagination } from '../UI/Pagination/Pagination'
 import { TextSamples } from './TextSamples/TextSamples'
-import { DM_Mono } from 'next/font/google'
+import { DM_Mono, Montserrat } from 'next/font/google'
 import { FULL_ITEMS } from '../../Constants'
 import Column from '../UI/Column/Column'
 
@@ -19,6 +19,11 @@ const dmmono = DM_Mono({
   weight: ['400', '500'],
   subsets: ['latin'],
   variable: '--font-dm_mono',
+})
+
+const montserrat = Montserrat({
+  weight: ['400', '500', '600', '700', '800'],
+  subsets: ['latin'],
 })
 
 const Rates = () => {
@@ -71,7 +76,7 @@ const Rates = () => {
     <div className="container mx-auto mt-16">
       <Subheader setLimit={setLimit} setOffset={setOffset} items={FULL_ITEMS} />
       <div
-        className={`${dmmono.variable} mb-4 grid cursor-pointer grid-cols-1n6 items-center justify-items-center rounded-sm border border-cyan-400 bg-gray-50  py-3 text-xl font-bold leading-snug`}
+        className={`${montserrat.className} mb-4 grid cursor-pointer grid-cols-1n6 items-center justify-items-center rounded-sm border border-cyan-400 bg-gray-50 py-3 text-lg font-bold leading-snug`}
       >
         <p>#</p>
         <p>Name</p>
@@ -79,7 +84,7 @@ const Rates = () => {
         <p>24h%</p>
         <Column name={'Market Cap'} tooltip={TextSamples.MarketCap} />
         <Column name={'Volume(24h)'} tooltip={TextSamples.Volume} />
-        <Column name={'Supply'} tooltip={TextSamples.Volume} />
+        <Column name={'Supply'} tooltip={TextSamples.Circulate} />
       </div>
       {openPort && (
         <Modal active={openPort} setActive={setOpenPort}>
