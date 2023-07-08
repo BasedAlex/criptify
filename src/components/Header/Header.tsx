@@ -4,7 +4,6 @@ import Pointer from '../../../public/svg/Pointer'
 import { useDispatch, useSelector } from 'react-redux'
 import Modal from '../UI/Modal/Modal'
 import Donation from '../Donation/Donation'
-import { useGetAssetQuery } from '@/store/fetchAPI/apiSlice'
 import useDebounce from '@/hooks/useDebounce'
 import { RootState } from '@/store/index'
 import { increaseActualBalance } from '@/store/slices/balanceSlice'
@@ -14,25 +13,47 @@ import Logo from '../../../public/svg/Logo'
 const Header: FC = ({}) => {
   const [search, setSearch] = useState('')
   const [openModal, setOpenModal] = useState(false)
-  const [skip, setSkip] = useState(true)
-  const debouncedValue = useDebounce(search, 1500)
-  const { data: singleAssetData } = useGetAssetQuery(debouncedValue, {
-    skip,
-  })
+  const items = useSelector((state: any) => state.favorite.favorite)
+  const debouncedValue = useDebounce(search, 1000)
+
   const dispatch = useDispatch()
 
   const balance = useSelector((state: RootState) => state.balance.balance)
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearch(e.target.value)
-    setSkip(false)
   }
 
   useEffect(() => {
     dispatch(increaseActualBalance())
   })
 
-  console.log(singleAssetData)
+  const handleSearchFav = () => {
+    const arr = []
+
+    for (let i = 0; i < items.length; i++) {
+      arr.push(items[i].id)
+    }
+    return arr
+  }
+
+  const setSearchFromFav = () => {
+    const deb = handleSearchFav()
+    const regex = new RegExp(`${debouncedValue}`)
+    const arr = []
+
+    if (!debouncedValue) {
+      return
+    }
+    for (let i = 0; i < deb.length; i++) {
+      if (deb[i].match(regex)) {
+        arr.push(deb[i])
+      }
+    }
+    return arr
+  }
+
+  console.log(search, setSearchFromFav())
 
   return (
     <header className={cn('border-b-2')}>
@@ -74,7 +95,13 @@ const Header: FC = ({}) => {
           </button>
         </div>
       </div>
-      <div>{singleAssetData?.data.id}</div>
+      <div>
+        {setSearchFromFav()
+          ? setSearchFromFav()!.map((item: any) => (
+              <div className="container mx-auto">{item}</div>
+            ))
+          : null}
+      </div>
       {openModal && (
         <Modal active={openModal} setActive={setOpenModal}>
           <Donation />
