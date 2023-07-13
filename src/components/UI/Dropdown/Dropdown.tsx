@@ -9,7 +9,12 @@ import {
 } from '../Dropbox/Dropbox'
 import { DotsVerticalIcon } from '@radix-ui/react-icons'
 
-export default function Dropdown() {
+interface IProps {
+  title: string[]
+  onSelect?: any
+}
+
+export default function Dropdown({ title, onSelect }: IProps) {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger>
@@ -18,10 +23,11 @@ export default function Dropdown() {
       <DropdownMenuContent>
         <DropdownMenuLabel>My Account</DropdownMenuLabel>
         <DropdownMenuSeparator />
-        <DropdownMenuItem>Profile</DropdownMenuItem>
-        <DropdownMenuItem>Billing</DropdownMenuItem>
-        <DropdownMenuItem>Team</DropdownMenuItem>
-        <DropdownMenuItem>Subscription</DropdownMenuItem>
+        {title.map((item) => (
+          <DropdownMenuItem key={item} onClick={onSelect}>
+            {item}
+          </DropdownMenuItem>
+        ))}
       </DropdownMenuContent>
     </DropdownMenu>
   )

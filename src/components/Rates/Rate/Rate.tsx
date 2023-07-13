@@ -6,6 +6,7 @@ import Star from '../../../../public/svg/Star'
 import { RootState } from '@/store/index'
 import { transform } from '../../../lib/transform'
 import { DM_Mono, Montserrat } from 'next/font/google'
+import Dropdown from '@/components/UI/Dropdown/Dropdown'
 
 const montserrat = Montserrat({
   weight: ['400', '500', '600', '700', '800'],
@@ -70,10 +71,16 @@ const Rate = ({ data, handleOpenModal }: any): any => {
       <div className="flex gap-4">
         <button
           className="invisible w-full rounded-2xl border border-sky-400 font-serif	font-normal"
-          onClick={() => handleOpenModal(data)}
+          // onClick={() => handleOpenModal(data)}
         >
           Add to portfolio
         </button>
+        <div>
+          <Dropdown
+            title={['Add to portfolio']}
+            onSelect={() => handleOpenModal(data)}
+          />
+        </div>
       </div>
     </div>
   )

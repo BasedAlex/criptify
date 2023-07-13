@@ -1,8 +1,6 @@
 'use client'
 import { addToFav, removeFromFav } from '@/store/slices/initialSlice'
 import { useDispatch, useSelector } from 'react-redux'
-import ToolTip from '../UI/ToolTip/ToolTip'
-import AlertCircle from '../../../public/svg/AlertCircle'
 import { TextSamples } from '../Rates/TextSamples/TextSamples'
 import Subheader from '../Rates/Subheader/Subheader'
 import { useState } from 'react'
@@ -126,7 +124,7 @@ const Favorite = () => {
                 />
                 <div className="flex items-center gap-4"></div>
                 <div>
-                  <Dropdown />
+                  <Dropdown title={['Add to portfolio']} />
                 </div>
               </motion.div>
             ))}
