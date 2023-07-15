@@ -1,7 +1,6 @@
 'use client'
 import { RootState } from '@/store/index'
-
-import React, { useState } from 'react'
+import React, { useEffect, useMemo, useState } from 'react'
 import { DM_Mono, Montserrat } from 'next/font/google'
 import { useDispatch, useSelector } from 'react-redux'
 import Subheader from '../Rates/Subheader/Subheader'
@@ -11,8 +10,6 @@ import Column from '../UI/Column/Column'
 import FixedParagraph from '../UI/FixedParagraph/FixedParagraph'
 import Dropdown from '../UI/Dropdown/Dropdown'
 import { Pagination } from '../UI/Pagination/Pagination'
-import useSetDataToStore from '@/hooks/useSetDataToStore'
-import { useGetAllAssetsQuery } from '@/store/fetchAPI/apiSlice'
 
 const dmmono = DM_Mono({
   weight: ['400', '500'],
@@ -26,64 +23,48 @@ const montserrat = Montserrat({
 })
 
 const PortfolioComponent = () => {
-  const port = useSelector((state: RootState) => state.portfolio)
+  const portfolio = useSelector((state: RootState) => state.portfolio.portfolio)
   const dispatch = useDispatch()
-  const [offset, setOffset] = useState(0)
-  const [limit, setLimit] = useState(100)
   const [dataOffset, setDataOffset] = useState(0)
   const [dataLimit, setDataLimit] = useState(5)
   const [currentPage, setCurrentPage] = useState('1')
+  const [currentPrices, setCurrentPrices] = useState(null)
 
-  const { data } = useGetAllAssetsQuery(
-    { limit, offset },
-    {
-      pollingInterval: 30000,
+  useEffect(() => {
+    const pricesWs = new WebSocket(
+      `wss://ws.coincap.io/prices?assets=${tokens}`
+    )
+
+    pricesWs.onmessage = function (msg) {
+      // console.log('msg.data', msg.data, tokens)
+      const data = msg.data ? JSON.parse(msg.data) : null
+      setCurrentPrices(data)
     }
-  )
+  })
 
-  const paginatedArr = () => {
+  const tokens = useMemo(() => {
+    return portfolio.map((coin: any) => coin.id).join(',')
+  }, [portfolio])
+
+  const paginatedArr = useMemo(() => {
     const arr: any[] = []
-    for (let i = 0; i < dataOffset + dataLimit; i++) {
-      if (!port?.portfolio[i]) {
-        return arr
-      }
-      arr.push(port?.portfolio[i])
+
+    if (!portfolio.length) {
+      return []
+    }
+
+    const len =
+      portfolio.length > dataOffset + dataLimit
+        ? dataOffset + dataLimit
+        : portfolio.length
+
+    for (let i = 0; i < len; i++) {
+      arr.push(portfolio[i])
     }
     return arr
-  }
+  }, [portfolio, dataOffset, dataLimit])
 
-  const portfolioArr = () => {
-    const newArr = paginatedArr()
-    const empty = []
-
-    for (let i = 0; i < newArr.length; i++) {
-      empty.push([
-        newArr[i],
-        ...data?.data?.filter((items: any) => items.id === newArr[i]?.id),
-        ,
-      ])
-    }
-
-    console.log('empty', empty[0] ? empty[0] : '')
-
-    let resultObject: any = {}
-
-    for (let i = 0; i < empty.length; i++) {
-      empty[i]?.forEach(function (item: any, index: number) {
-        for (let keys in item) {
-          if (!resultObject.hasOwnProperty(keys)) {
-            resultObject[keys] = item[keys]
-          } else {
-            resultObject[keys + 'new'] = item[keys]
-          }
-        }
-      })
-    }
-
-    return resultObject
-  }
-
-  console.log(portfolioArr())
+  console.log(paginatedArr)
 
   return (
     <div>
@@ -109,13 +90,14 @@ const PortfolioComponent = () => {
             <p className=" place-self-center	">#</p>
             <p>Name</p>
             <p>Price</p>
+            <p>Price market</p>
             <p>24h %</p>
             <p>Current Price</p>
             <Column name={'Volume(24h)'} tooltip={TextSamples.Volume} />
             <Column name={'Supply'} tooltip={TextSamples.Circulate} />
           </div>
           <div className={montserrat.className}>
-            {paginatedArr()?.map((item: any) => (
+            {paginatedArr.map((item: any) => (
               <div
                 key={item.id}
                 className={`container  mx-auto grid grid-cols-1n7 items-center justify-center justify-items-center border-b  pb-2 pt-2`}
@@ -129,6 +111,15 @@ const PortfolioComponent = () => {
                 <FixedParagraph
                   fixed={2}
                   value={item.priceUsd}
+                  isTooltip={true}
+                />
+                <FixedParagraph
+                  fixed={2}
+                  value={
+                    currentPrices
+                      ? currentPrices[item.id] ?? item.priceUsd
+                      : item.priceUsd
+                  }
                   isTooltip={true}
                 />
                 <FixedParagraph fixed={2} value={item.changePercent24Hr} />
@@ -155,11 +146,11 @@ const PortfolioComponent = () => {
             ))}
           </div>
         </div>
-        {port.portfolio.length > dataLimit && (
+        {portfolio.length > dataLimit && (
           <Pagination
             limit={dataLimit}
             offset={dataOffset}
-            maxOffset={port.portfolio.length}
+            maxOffset={portfolio.length}
             setOffset={setDataOffset}
             currentPage={currentPage}
             endless={true}
