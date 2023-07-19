@@ -5,7 +5,7 @@ import { assetsApi } from './fetchAPI/apiSlice'
 import favoriteSlice from './slices/initialSlice'
 import portfolioSlice from './slices/portfolioSlice'
 import balanceSlice from './slices/balanceSlice'
-import { pricesApi } from './fetchAPI/useWebSocket'
+import { pricesApi } from './fetchAPI/pricesSlice'
 
 const rootReducer = {
   favorite: favoriteSlice,

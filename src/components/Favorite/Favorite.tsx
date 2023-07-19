@@ -14,7 +14,7 @@ import FixedParagraph from '../UI/FixedParagraph/FixedParagraph'
 import { FAVED_ITEMS } from '../../Constants'
 import Dropdown from '../UI/Dropdown/Dropdown'
 import Column from '../UI/Column/Column'
-import { useGetPricesQuery } from '@/store/fetchAPI/useWebSocket'
+import { useGetPricesQuery } from '@/store/fetchAPI/pricesSlice'
 
 const montserrat = Montserrat({
   weight: ['400', '500', '600', '700', '800'],
@@ -35,8 +35,6 @@ const Favorite = () => {
   const [offset, setOffset] = useState(0)
   const [limit, setLimit] = useState(5)
   const [currentPage, setCurrentPage] = useState('1')
-  const date = useGetPricesQuery({})
-  console.log(date)
 
   const setData = useSetDataToStore({
     data: faved,

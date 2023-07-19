@@ -10,6 +10,7 @@ import Column from '../UI/Column/Column'
 import FixedParagraph from '../UI/FixedParagraph/FixedParagraph'
 import Dropdown from '../UI/Dropdown/Dropdown'
 import { Pagination } from '../UI/Pagination/Pagination'
+import { useGetPricesQuery } from '@/store/fetchAPI/pricesSlice'
 
 const dmmono = DM_Mono({
   weight: ['400', '500'],
@@ -30,17 +31,25 @@ const PortfolioComponent = () => {
   const [currentPage, setCurrentPage] = useState('1')
   const [currentPrices, setCurrentPrices] = useState(null)
 
-  useEffect(() => {
-    const pricesWs = new WebSocket(
-      `wss://ws.coincap.io/prices?assets=${tokens}`
-    )
+  // useGetPricesQuery({})
 
-    pricesWs.onmessage = function (msg) {
-      // console.log('msg.data', msg.data, tokens)
-      const data = msg.data ? JSON.parse(msg.data) : null
-      setCurrentPrices(data)
-    }
-  })
+  const coin = 'bitcoinethereum'
+
+  const data = useGetPricesQuery({ coin })
+
+  console.log(data)
+
+  // useEffect(() => {
+  //   const pricesWs = new WebSocket(
+  //     `wss://ws.coincap.io/prices?assets=${tokens}`
+  //   )
+
+  //   pricesWs.onmessage = function (msg) {
+  //     // console.log('msg.data', msg.data, tokens)
+  //     const data = msg.data ? JSON.parse(msg.data) : null
+  //     setCurrentPrices(data)
+  //   }
+  // })
 
   const tokens = useMemo(() => {
     return portfolio.map((coin: any) => coin.id).join(',')
@@ -64,7 +73,7 @@ const PortfolioComponent = () => {
     return arr
   }, [portfolio, dataOffset, dataLimit])
 
-  console.log(paginatedArr)
+  // console.log(paginatedArr)
 
   return (
     <div>
