@@ -22,12 +22,12 @@ export default function Minus({
         xmlns="http://www.w3.org/2000/svg"
         fill="#000000"
       >
-        <g id="SVGRepo_bgCarrier" stroke-width="0" />
+        <g id="SVGRepo_bgCarrier" strokeWidth="0" />
 
         <g
           id="SVGRepo_tracerCarrier"
-          stroke-linecap="round"
-          stroke-linejoin="round"
+          strokeLinecap="round"
+          strokeLinejoin="round"
         />
 
         <g id="SVGRepo_iconCarrier">
@@ -36,9 +36,9 @@ export default function Minus({
           <desc>Created with Sketch.</desc> <defs> </defs>{' '}
           <g
             id="Page-1"
-            stroke-width="0.00021000000000000004"
+            strokeWidth="0.00021000000000000004"
             fill="none"
-            fill-rule="evenodd"
+            fillRule="evenodd"
           >
             {' '}
             <g
